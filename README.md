@@ -11,7 +11,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 
 ## How to run
 1. Run the application on tomcat. 
-2. Make a zip of sample pojos in package "BCG5.bcg.business.client.pojos" and upload it using POST call on URI: http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file
+2. Make a zip of sample pojos in package "BCG5.bcg.business.client.pojos" and upload it using POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file
 3. Check the sample client pojo files in "BCG5.bcg.business.client.pojos" package and make corresponding json text files based on the field names of the pojos. For example: 
     PlanetChartView.json
     {
@@ -31,12 +31,12 @@ This project aims to achieve opinionated automated handling of impedance mismatc
     "starType":"Yellow Dwarf"
     }
 
-4. Make a zip of all such json files created and upload it  POST call on URI: http://localhost:8080/bcgNew/webapi/generateCode/uploadJsonZip/path_to_your_json_zip_file
+4. Make a zip of all such json files created and upload it  POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadJsonZip/path_to_your_json_zip_file
 
 After following these steps the code (dtos, daos and services) will be generated in respective client packages in the same project. Future plan is to generate the code files in the client specified project location.
 
 # Note: 
-The URI http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.
+The URI http://localhost:8080/bcg/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.
 
 Same thing can be tested, by replacing the existing sample pojos in the project by your created pojos and respective json files zip. The plan is to upload the pojos zip and json zip together in the same call and the code is generated instantaneously. The call for uploading pojos is also present, but not completely functional. So please follow the above mentioned process in note.
 

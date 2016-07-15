@@ -36,7 +36,7 @@ PlanetView.json
 
 After following these steps the code (dtos, daos and services) will be generated in respective client packages.
 
-*Note: The URI http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/<path to your pojo zip file> is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.
+#Note: The URI http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/<path to your pojo zip file> is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.
 
 Same thing can be tested, by replacing the existing sample pojos in the project by your created pojos and respective json files zip. The plan is to upload the pojos zip and json zip together in the same call and the code is generated instantaneously. The call for uploading pojos is also present, but not completely functional. So please follow the above mentioned process in note.
 

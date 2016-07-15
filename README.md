@@ -13,7 +13,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 1. Run the application on tomcat. 
 2. Make a zip of sample pojos in package "BCG5.bcg.business.client.pojos" and upload it using POST call on URI: http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/<path to your pojo zip file>
 3. Check the sample client pojo files in "BCG5.bcg.business.client.pojos" package and make corresponding json text files based on the field names of the pojos. For example: 
-    '''PlanetChartView.json
+    PlanetChartView.json
     {
     "planetId":"planet01",
     "planetName":"earth",
@@ -29,7 +29,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
     "planetSize":3,
     "starName":"sol",
     "starType":"Yellow Dwarf"
-    }'''
+    }
 
 4. Make a zip of all such json files created and upload it  POST call on URI: http://localhost:8080/bcgNew/webapi/generateCode/uploadJsonZip/<path to your json zip file>
 

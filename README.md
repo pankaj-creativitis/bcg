@@ -33,7 +33,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 
 4. Make a zip of all such json files created and upload it  POST call on URI: http://localhost:8080/bcgNew/webapi/generateCode/uploadJsonZip/path_to_your_json_zip_file
 
-After following these steps the code (dtos, daos and services) will be generated in respective client packages.
+After following these steps the code (dtos, daos and services) will be generated in respective client packages in the same project. Future plan is to generate the code files in the client specified project location.
 
 # Note: 
 The URI http://localhost:8080/bcgNew/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.

@@ -45,15 +45,6 @@ public class CodeMakerResource {
 	@Autowired
 	private DaoMakerService daoMakerService;
 	
-	public static void main(String[] args) {
-		String testStr = "jsonzip=/home/ngadmin/Desktop/Code_Gen_Test/Code_Gen_Test.zip";
-		System.out.println("testStr length> > >"+testStr.length());
-		System.out.println("testStr.indexOf > > >"+testStr.indexOf(Constants.EQUAL));
-		testStr = testStr.substring(testStr.indexOf(Constants.EQUAL), 
-				testStr.length());
-		System.out.println("testStr > > >"+testStr);
-	}
-	
     /**
      * Method handling HTTP POST requests. The returned object will be java Files
      * sent to the client as "text/plain" media type.

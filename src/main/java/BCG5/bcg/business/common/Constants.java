@@ -59,6 +59,9 @@ public abstract class  Constants {
 	public static final String ALL_DAO_PKG = "BCG5.bcg.business.client.daos.";
 	public static final String DTO_PKG = "BCG5.bcg.business.client.dtos.";
 	
+	public static final String POJOZIP = "pojozip";
+	public static final String JSONZIP = "jsonzip";
+	
 	public static final String SUPPRESS_WARNINGS = "@SuppressWarnings(\"unchecked\")";
 	public static final String REPOSITORY = "@Repository";
 	public static final String SERVICE = "@Service";

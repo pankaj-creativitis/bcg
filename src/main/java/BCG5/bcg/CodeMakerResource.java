@@ -1,5 +1,7 @@
 package BCG5.bcg;
 
+import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +45,72 @@ public class CodeMakerResource {
 	@Autowired
 	private DaoMakerService daoMakerService;
 	
+	public static void main(String[] args) {
+		String testStr = "jsonzip=/home/ngadmin/Desktop/Code_Gen_Test/Code_Gen_Test.zip";
+		System.out.println("testStr length> > >"+testStr.length());
+		System.out.println("testStr.indexOf > > >"+testStr.indexOf(Constants.EQUAL));
+		testStr = testStr.substring(testStr.indexOf(Constants.EQUAL), 
+				testStr.length());
+		System.out.println("testStr > > >"+testStr);
+	}
+	
+    /**
+     * Method handling HTTP POST requests. The returned object will be java Files
+     * sent to the client as "text/plain" media type.
+     *
+     * @return SimpleObject object that will be returned as a application/json response.
+     */
+    @POST
+    @Path("/uploadConfigFile/{configFilePath : .+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadBaseFiles(@PathParam("configFilePath")String configFilePath) throws Exception{
+//    	String workingDir = "/home/ngadmin/neonworkspace/bcgNew/src/main/java/BCG5/bcg/business/client/pojos";
+    	String workingDir = Constants.CLIENT_PACKAGE + Constants.CLIENT_POJO_PACKAGE;
+    	File configFile = new File(configFilePath);
+    	Set<String> configValues = unzipUtility.readFile(configFile);
+    	System.out.println(configValues);
+    	String jsonFilePath = null;
+    	String pojoFilePath = null;
+    	for(String configValue: configValues){
+    		if(configValue.contains(Constants.POJOZIP)){
+    			System.out.println("configValue > > >"+configValue);
+    			pojoFilePath = configValue.substring(configValue.indexOf(Constants.EQUAL) + 1, 
+    					configValue.length());
+    			System.out.println("pojoFilePath > > >"+pojoFilePath);
+    		} else if(configValue.contains(Constants.JSONZIP)){
+    			System.out.println("configValue > > >"+configValue);
+    			jsonFilePath = configValue.substring(configValue.indexOf(Constants.EQUAL) + 1, 
+    					configValue.length());
+    			System.out.println("jsonFilePath > > >"+jsonFilePath);
+    		}
+    	}
+         try {
+        	 unzipUtility.unzip(pojoFilePath, workingDir);
+//           compile the newly imported classes
+        	 String classDirectory = "/home/ngadmin/neonworkspace/bcgNew";
+        	 unzipUtility.compile(classDirectory);
+//        	 save the pojo meta info in database
+        	 classEntityService.addClassEntities(workingDir);
+         } catch (Exception ex) {
+             // some errors occurred
+             ex.printStackTrace();
+         }
+         
+         try {
+        	 Map<String, Set<DtoRelationDto>> dtoMap = unzipUtility.unzipJsonNew(jsonFilePath);
+        	 for (Map.Entry<String, Set<DtoRelationDto>> entry : dtoMap.entrySet())
+        	 {
+        	     dtoMakerService.addDtoNew(entry.getKey(), entry.getValue());
+        	 }
+         } catch (Exception ex) {
+             // some errors occurred
+             ex.printStackTrace();
+         }
+         
+       return Response.accepted().build();
+       
+    }
+    
     /**
      * Method handling HTTP POST requests. The returned object will be java Files
      * sent to the client as "text/plain" media type.

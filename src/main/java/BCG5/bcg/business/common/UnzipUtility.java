@@ -1,10 +1,12 @@
 package BCG5.bcg.business.common;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +37,29 @@ public class UnzipUtility {
      * Size of the buffer to read/write data
      */
     private static final int BUFFER_SIZE = 4096;
+    
+	 /**
+     * Reads the file line by line and returns the config values
+     */
+    public Set<String> readFile(File fin) throws IOException {
+    	FileInputStream fis = new FileInputStream(fin);
+     
+    	//Construct BufferedReader from InputStreamReader
+    	BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+     
+    	String line = null;
+    	Set<String> configValues = new HashSet<>();
+    	while ((line = br.readLine()) != null) {
+    		System.out.println(line);
+    		line = line.trim();
+    		line = line.replace(" ", "");
+    		configValues.add(line);
+    	}
+     
+    	br.close();
+    	return configValues;
+    }
+    
     /**
      * Extracts a zip file specified by the zipFilePath to a directory specified by
      * destDirectory (will be created if does not exists)

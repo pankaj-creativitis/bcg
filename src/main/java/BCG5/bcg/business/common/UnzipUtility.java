@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -16,8 +18,11 @@ import java.util.zip.ZipInputStream;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.cli.MavenCli;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+
+import BCG5.bcg.business.my.dto.DtoRelationDto;
 
 @Component("unzipUtility")
 public class UnzipUtility {
@@ -53,9 +58,6 @@ public class UnzipUtility {
                 extractFile(zipIn, filePath);
                 try {
                 	String className = entry.getName().substring(0, entry.getName().indexOf("."));
-//                	System.out.println("fileName > > > > > "+ className);
-                	
-//					Class<?> compiledClass = InMemoryJavaCompiler.compile("BCG5.bcg.business.client.pojos"+className, fileContent);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -71,6 +73,7 @@ public class UnzipUtility {
         zipIn.close();
     }
     
+//    Method Marked for deletion
     public Map<String, Set<String>> unzipJson(String zipFilePath ) throws IOException {
     	logger.info("in the unzip method > > > > > >> ");
         ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
@@ -82,6 +85,25 @@ public class UnzipUtility {
             	String dtoName = entry.getName();
             	Set<String> jsonKeys = extractFileAsJsonKeys(zipIn);
             	dtoMap.put(dtoName, jsonKeys);
+            } 
+            zipIn.closeEntry();
+            entry = zipIn.getNextEntry();
+        }
+        zipIn.close();
+        return dtoMap;
+    }
+    
+    public Map<String, Set<DtoRelationDto>> unzipJsonNew(String zipFilePath ) throws IOException {
+    	logger.info("in the unzip method > > > > > >> ");
+        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+        ZipEntry entry = zipIn.getNextEntry();
+        Map<String, Set<DtoRelationDto>> dtoMap = new HashMap<>();
+        while (entry != null) {
+            if (!entry.isDirectory()) {
+                // if the entry is a file, extracts it
+            	String dtoName = entry.getName();
+            	Set<DtoRelationDto> jsonDtos = extractFileAsJsonKeysNew(zipIn);
+            	dtoMap.put(dtoName, jsonDtos);
             } 
             zipIn.closeEntry();
             entry = zipIn.getNextEntry();
@@ -131,21 +153,55 @@ public class UnzipUtility {
      * @param zipIn
      * @param filePath
      * @throws IOException
+     * Method Marked for deletion
+     */
+    private Set<DtoRelationDto> extractFileAsJsonKeysNew(ZipInputStream zipIn) throws IOException {
+    	
+        String jsonTxt = IOUtils.toString(zipIn);
+        JSONObject json = (JSONObject) new JSONObject( jsonTxt );  
+        Iterator<?> keys = json.keys();
+        Set<DtoRelationDto> jsonDtos = new HashSet<>();
+        while( keys.hasNext() ) {
+            String key = (String)keys.next();
+            DtoRelationDto dto = new DtoRelationDto();
+            dto.setFieldName(key);
+            if(json.get(key) instanceof String == false){
+            	JSONArray innerJson = json.getJSONArray(key);
+            	String conditionalKey = new String();
+            	for(int i =0;i< innerJson.length(); i++ ) {
+                    String innerKey = (String)innerJson.getString(i);
+                    conditionalKey = innerKey + "," + conditionalKey;
+            	}
+            	conditionalKey = conditionalKey.substring(0, conditionalKey.length()-1);
+            	dto.setFullFieldName(conditionalKey);
+            } else {
+            	dto.setFullFieldName(json.getString(key));
+            }
+            jsonDtos.add(dto);
+            if ( json.get(key) instanceof JSONObject ) {
+//            	TODO:Possibly make a recursive function in case we need the inner Json keys..
+            }
+        }
+        return jsonDtos;
+    }
+    
+    /**
+     * Extracts a zip entry as a JSON object (file entry)
+     * @param zipIn
+     * @param filePath
+     * @throws IOException
      */
     private Set<String> extractFileAsJsonKeys(ZipInputStream zipIn) throws IOException {
     	
         String jsonTxt = IOUtils.toString(zipIn);
         JSONObject json = (JSONObject) new JSONObject( jsonTxt );  
-//        System.out.println(json.toString());
         Iterator<?> keys = json.keys();
         Set<String> jsonKeys = new HashSet<>();
         while( keys.hasNext() ) {
             String key = (String)keys.next();
-//            System.out.println(key);
             jsonKeys.add(key);
             if ( json.get(key) instanceof JSONObject ) {
 //            	TODO:Possibly make a recursive function in case we need the inner Json keys..
-//            	System.out.println("nothing done");
             }
         }
         return jsonKeys;
@@ -156,12 +212,6 @@ public class UnzipUtility {
          int result = cli.doMain(new String[]{"clean", "install"},
         		 classDirectory,
                  System.out, System.out);
-//         System.out.println("result: " + result);
     }
-    
-//	static String readFile(String path, Charset encoding) throws IOException {
-//		byte[] encoded = Files.readAllBytes(Paths.get(path));
-//		return new String(encoded, encoding);
-//	}
 
 }

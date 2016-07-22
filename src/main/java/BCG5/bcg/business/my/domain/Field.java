@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @javax.persistence.Entity
 @Table(name = "FIELD")
-public class Field implements Serializable{
+public class Field implements Serializable, Comparable<Field>{
 	
 
 	private String fieldId;
@@ -161,6 +161,10 @@ public class Field implements Serializable{
 		} else if (!fieldName.equals(other.fieldName))
 			return false;
 		return true;
+	}
+	@Override
+	public int compareTo(Field field) {
+		return (this.fieldName).compareTo(field.fieldName);
 	}
 	
 	

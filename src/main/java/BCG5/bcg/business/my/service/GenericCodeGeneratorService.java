@@ -20,7 +20,7 @@ public interface GenericCodeGeneratorService {
 
 	StringBuilder getStructureText(String className, String classType);
 
-	String getDaoText(String daoEntityName, Field field, Set<String> baseHierarchy, Set<String> aliasSet,
+	String getCriteriaDaoText(Field field, Set<String> baseHierarchy, Set<String> aliasSet,
 			List<PropertyDto> propertyDtos, StringBuilder builder);
 
 	StringBuilder getServiceMethodText(Field field, Field daoField);
@@ -28,5 +28,7 @@ public interface GenericCodeGeneratorService {
 //	Set<String> getServiceClassImports(Field field, Set<String> existingImports);
 
 	Set<String> getServiceClassImports(Field field, Field daoField, Set<String> existingImports);
+
+	String getHQLDaoText(Field field, List<String> hqlFields, StringBuilder builder);
 
 }

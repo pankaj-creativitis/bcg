@@ -20,6 +20,7 @@ import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.DTO;
 import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
+import BCG5.bcg.business.my.dto.DtoRelationDto;
 import BCG5.bcg.business.my.service.ClassEntityService;
 import BCG5.bcg.business.my.service.DaoMakerService;
 import BCG5.bcg.business.my.service.DtoMakerService;
@@ -59,7 +60,7 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 	
 	@Override
 	@Transactional
-	public void addDto(String dtoName, Set<String> fields) {
+	public void addDtoNew(String dtoName, Set<DtoRelationDto> fields) {
 		
 		List<Field> dtoFields = new ArrayList<>();
 		ClassEntity dtoEntity = new ClassEntity();
@@ -71,56 +72,59 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 		
 		List<DTORelation> dtoRelations = new ArrayList<>();
 		for(Field field : memberFields){
-			if(fields.contains(field.getFieldName())){
-				Field dtoField = new Field();
-				
-				dtoField.setClassName(dtoName);
-				dtoField.setClassType("dto");
-				dtoField.setFieldDataType(field.getFieldDataType());
-				dtoField.setFieldModifier(Constants.PRIVATE);
-				dtoField.setFieldName(field.getFieldName());
-				dtoField.setFieldType("member");
-				
-//				Make a DTORelation object
-				Set<DTORelation> dummyDTORelationSet = new HashSet<>();
-				DTORelation dtoRelation = new DTORelation();
-				dtoRelation.setDtoPojoClassName(field.getClassName());
-				dtoRelation.setDtoName(dtoName);
-				dummyDTORelationSet.add(dtoRelation);
-				dtoField.setDtoRelations(dummyDTORelationSet);
-				dtoRelations.add(dtoRelation);
-				dtoFields.add(dtoField);
-				
-				Field getterDtoField = new Field();
-				String getterMethodName =  "get" + field.getFieldName().substring(0, 1).toUpperCase() 
-						+ field.getFieldName().substring(1);
-				getterDtoField.setClassName(dtoName);
-				getterDtoField.setClassType("dto");
-				getterDtoField.setFieldDataType(field.getFieldDataType());
-				getterDtoField.setFieldModifier(Constants.PUBLIC);
-				getterDtoField.setFieldName(getterMethodName);
-				getterDtoField.setFieldType("method");
-				dtoFields.add(getterDtoField);
-				
-				Field setterDtoField = new Field();
-				String setterMethodName =  "set" + field.getFieldName().substring(0, 1).toUpperCase() 
-						+ field.getFieldName().substring(1);
-				setterDtoField.setClassName(dtoName);
-				setterDtoField.setClassType("dto");
-				setterDtoField.setFieldDataType(Constants.VOID);
-				setterDtoField.setFieldArgument(field.getFieldDataType());
-				setterDtoField.setFieldModifier(Constants.PUBLIC);
-				setterDtoField.setFieldName(setterMethodName);
-				setterDtoField.setFieldType("method");
-				dtoFields.add(setterDtoField);
-				
-			}		
+			for(DtoRelationDto dtoRelationDto : fields){
+				if(dtoRelationDto.getFieldName().contains(field.getFieldName())){
+					Field dtoField = new Field();
+					
+					dtoField.setClassName(dtoName);
+					dtoField.setClassType("dto");
+					dtoField.setFieldDataType(field.getFieldDataType());
+					dtoField.setFieldModifier(Constants.PRIVATE);
+					dtoField.setFieldName(field.getFieldName());
+					dtoField.setFieldType("member");
+					
+	//				Make a DTORelation object
+					Set<DTORelation> dummyDTORelationSet = new HashSet<>();
+					DTORelation dtoRelation = new DTORelation();
+					dtoRelation.setDtoPojoClassName(field.getClassName());
+					System.out.println("dtoRelationDto.getFullFieldName() > > >"+dtoRelationDto.getFullFieldName());
+					dtoRelation.setDtoFieldName(dtoRelationDto.getFullFieldName());
+					dtoRelation.setDtoName(dtoName);
+					dummyDTORelationSet.add(dtoRelation);
+					dtoField.setDtoRelations(dummyDTORelationSet);
+					dtoRelations.add(dtoRelation);
+					dtoFields.add(dtoField);
+					
+					Field getterDtoField = new Field();
+					String getterMethodName =  "get" + field.getFieldName().substring(0, 1).toUpperCase() 
+							+ field.getFieldName().substring(1);
+					getterDtoField.setClassName(dtoName);
+					getterDtoField.setClassType("dto");
+					getterDtoField.setFieldDataType(field.getFieldDataType());
+					getterDtoField.setFieldModifier(Constants.PUBLIC);
+					getterDtoField.setFieldName(getterMethodName);
+					getterDtoField.setFieldType("method");
+					dtoFields.add(getterDtoField);
+					
+					Field setterDtoField = new Field();
+					String setterMethodName =  "set" + field.getFieldName().substring(0, 1).toUpperCase() 
+							+ field.getFieldName().substring(1);
+					setterDtoField.setClassName(dtoName);
+					setterDtoField.setClassType("dto");
+					setterDtoField.setFieldDataType(Constants.VOID);
+					setterDtoField.setFieldArgument(field.getFieldDataType());
+					setterDtoField.setFieldModifier(Constants.PUBLIC);
+					setterDtoField.setFieldName(setterMethodName);
+					setterDtoField.setFieldType("method");
+					dtoFields.add(setterDtoField);
+					
+				}	
+			}
 		}
 		dtoEntity.setClassFields(dtoFields);
 		classEntityService.addClassEntity(dtoEntity);
 		makeDtoClass(dtoEntity);
 //		add the dao and service classes
-//		*********Temporarily Commented - DO NOT DELETE **********************************
 		daoMakerService.addDao();
 	}
 	
@@ -134,7 +138,6 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 				
 		String finalClassString = dtofinalText.toString();
 		finalClassString = finalClassString.replace(Constants.IMPORT_HOOK, "");
-//		System.out.println(finalClassString);
 		String finalOutputPath = Constants.CLIENT_PACKAGE + Constants.CLIENT_DTO_PACKAGE 
 				+ File.separator + dtoEntity.getClassName() + Constants.JAVA_EXT;
 		try {

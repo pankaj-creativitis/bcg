@@ -10,9 +10,11 @@ public interface DaoMakerDao {
 
 	List<PropertyDto> getPropertyDtos(String dtoName);
 
-	List<PropertyDto> getPropertyDtosTest(String dtoName);
-
 	List<DTORelation> getDTORelationsByDtoName(String dtoName);
 
 	Set<String> getPojoHierarchyByDtoName(String dtoName);
+
+	List<String> getHQLFields(String dtoName);
+
+	Boolean checkHQlMethod(String dtoName);
 }

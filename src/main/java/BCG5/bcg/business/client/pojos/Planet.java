@@ -1,4 +1,5 @@
 package BCG5.bcg.business.client.pojos;
+//package com.mean.business.domain;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

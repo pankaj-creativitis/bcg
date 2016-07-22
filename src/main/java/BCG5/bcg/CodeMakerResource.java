@@ -19,6 +19,8 @@ import BCG5.bcg.business.common.Constants;
 import BCG5.bcg.business.common.UnzipUtility;
 import BCG5.bcg.business.my.dao.ClassEntityDao;
 import BCG5.bcg.business.my.domain.ClassEntity;
+import BCG5.bcg.business.my.domain.DTORelation;
+import BCG5.bcg.business.my.dto.DtoRelationDto;
 import BCG5.bcg.business.my.dto.PropertyDto;
 import BCG5.bcg.business.my.service.ClassEntityService;
 import BCG5.bcg.business.my.service.DaoMakerService;
@@ -41,27 +43,6 @@ public class CodeMakerResource {
 	@Autowired
 	private DaoMakerService daoMakerService;
 	
-	
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//		TestPojo pojo = new TestPojo();
-//		Class class1 = pojo.getClass();
-//		
-//		Member[] mbrs = class1.getDeclaredFields();
-//	    for(int i = 0; i < mbrs.length; i++) {
-//	        System.out.println("member = " + mbrs[i].toString());
-//	     }
-//		System.out.println();
-//
-//	}
-	
-//	For next steps to produce the zip file
-//	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-//    return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-//  	      .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" ) //optional
-//  	      .build();
-	
-	
     /**
      * Method handling HTTP POST requests. The returned object will be java Files
      * sent to the client as "text/plain" media type.
@@ -72,10 +53,8 @@ public class CodeMakerResource {
     @Path("/uploadPojoZip/{filePath : .+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadPojos(@PathParam("filePath")String filePath) throws Exception{
-//    	System.out.println("in the resource POST method");
 //    	String workingDir = "/home/ngadmin/neonworkspace/bcgNew/src/main/java/BCG5/bcg/business/client/pojos";
     	String workingDir = Constants.CLIENT_PACKAGE + Constants.CLIENT_POJO_PACKAGE;
-// 	   System.out.println("Current working directory : " + workingDir);
          try {
         	 unzipUtility.unzip(filePath, workingDir);
 //           compile the newly imported classes
@@ -94,14 +73,12 @@ public class CodeMakerResource {
     @POST
     @Path("/uploadJsonZip/{filePath : .+}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response uploadJson(@PathParam("filePath")String filePath) throws Exception{
-//    	System.out.println("in the resource POST method");
+    public Response uploadJsonNew(@PathParam("filePath")String filePath) throws Exception{
          try {
-        	 Map<String, Set<String>> dtoMap = unzipUtility.unzipJson(filePath);
-        	 for (Map.Entry<String, Set<String>> entry : dtoMap.entrySet())
+        	 Map<String, Set<DtoRelationDto>> dtoMap = unzipUtility.unzipJsonNew(filePath);
+        	 for (Map.Entry<String, Set<DtoRelationDto>> entry : dtoMap.entrySet())
         	 {
-//        	     System.out.println(entry.getKey() + "/" + entry.getValue());
-        	     dtoMakerService.addDto(entry.getKey(), entry.getValue());
+        	     dtoMakerService.addDtoNew(entry.getKey(), entry.getValue());
         	 }
          } catch (Exception ex) {
              // some errors occurred
@@ -121,25 +98,6 @@ public class CodeMakerResource {
     }
     
     @POST
-    @Path("/TestPropertyDto/{dtoName}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response testPropertyDto(@PathParam("filePath")String dtoName) throws Exception{
-    	logger.info("in the resource POST method");
-    	Set<String> propertyDtos = null;
-         try {
-        	 
-//        	 propertyDtos = daoMakerService.testDao("PlanetView");
-        	 propertyDtos = daoMakerService.testDao("PlanetView");
-             
-         } catch (Exception ex) {
-             // some errors occurred
-             ex.printStackTrace();
-         }
-       return Response.ok(propertyDtos).build();
-       
-    }
-    
-    @POST
     @Path("/addDao")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addDaoClass() throws Exception{
@@ -154,6 +112,18 @@ public class CodeMakerResource {
          }
        return Response.accepted().build();
        
+    }
+    
+    /**
+     * Method handling HTTP GET requests. The returned object will be sent
+     * to the client as "text/plain" media type.
+     *
+     * @return String that will be returned as a text/plain response.
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getIt() {
+        return "Got it!";
     }
 
 }

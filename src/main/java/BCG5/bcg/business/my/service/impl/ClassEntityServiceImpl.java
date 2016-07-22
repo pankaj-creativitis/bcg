@@ -53,7 +53,6 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 		if (directoryListing != null) {
 			for (File pojoFile : directoryListing) {
 				pojoFilename = pojoFile.getName().substring(0, pojoFile.getName().indexOf("."));
-//				System.out.println("pojoFilename  > > > >> " + pojoFilename);
 				ClassEntity classEntity = new ClassEntity();
 				classEntity.setClassName(pojoFilename);
 				classEntity.setClassType("pojo");
@@ -73,7 +72,6 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 							if (aType.getActualTypeArguments()[0] != null) {
 								Type fieldArgType = aType.getActualTypeArguments()[0];
 								Class fieldArgClass = (Class) fieldArgType;
-//								System.out.println("fieldArgClass = " + fieldArgClass);
 								field.setFieldReturnType(fieldArgClass.getName());
 							}
 						}
@@ -84,7 +82,6 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 						field.setFieldModifier(Modifier.toString(member.getModifiers()));
 						field.setFieldType("member");
 						field.setClassName(classEntity.getClassName());
-//						System.out.println("member = " + fieldMbrs[i].toString());
 						field.setClassType("pojo");
 						fields.add(field);
 					}
@@ -119,7 +116,6 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 						field.setFieldArgument(Arrays.toString(method.getParameterTypes()));
 						field.setFieldType("method");
 						field.setClassName(classEntity.getClassName());
-//						System.out.println("method = " + methodMbrs[i].toString());
 						field.setClassType("pojo");
 						fields.add(field);
 					}

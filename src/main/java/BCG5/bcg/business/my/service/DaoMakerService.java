@@ -9,6 +9,4 @@ public interface DaoMakerService {
 	
 	void addDao();
 
-	Set<String> testDao(String dtoName);
-
 }

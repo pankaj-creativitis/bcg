@@ -6,6 +6,7 @@ import java.util.Set;
 import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
+import BCG5.bcg.business.my.dto.DtoRelationDto;
 
 public interface ClassEntityDao {
 	
@@ -15,13 +16,9 @@ public interface ClassEntityDao {
 
 	List<Field> getMemberFieldsByClassType();
 
-	List<DTORelation> getDTORelationsByDtoName(String className);
-
 	List<DTORelation> getAllDTORelations();
 
 	ClassEntity getClassEntityByName(String className);
-
-	Set<String> getPojoHierarchyByDtoName(String dtoName);
 
 	List<Field> getFieldListByDtoName(String dtoName);
 

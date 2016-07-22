@@ -18,6 +18,7 @@ public abstract class  Constants {
 	public static final String CURLY_BRACKET_E = "}";
 	public static final String BRACKET_B = "(";
 	public static final String BRACKET_E = ")";
+	public static final String PLUS = "+";
 	public static final String PRIVATE ="private";
 	public static final String PUBLIC ="public";
 	public static final String VOID ="void";
@@ -54,9 +55,9 @@ public abstract class  Constants {
 	public static final String CODE_DTO_PKG = "dtos;";
 	public static final String CODE_DAO_PKG = "daos;";
 	public static final String CODE_SERVICE_PKG = "service;";
-	public static final String CODE_POJO_PKG = "BCG5.bcg.business.client.pojos.";
+	public static final String POJO_PKG = "BCG5.bcg.business.client.pojos.";
 	public static final String ALL_DAO_PKG = "BCG5.bcg.business.client.daos.";
-	
+	public static final String DTO_PKG = "BCG5.bcg.business.client.dtos.";
 	
 	public static final String SUPPRESS_WARNINGS = "@SuppressWarnings(\"unchecked\")";
 	public static final String REPOSITORY = "@Repository";
@@ -86,6 +87,25 @@ public abstract class  Constants {
         }
     }
     
+    public enum CommonDaoStatements {
+    	GETSESSION("sessionFactory.getCurrentSession()"),
+    	LIST(".list()");
+    	
+        private final String value;
+
+        public String getValue() {
+            return value;
+        }
+
+        private CommonDaoStatements(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+    
     public enum CriteriaStatements {
         CRITERIA(".createCriteria"),
         ALIAS(".createAlias("),
@@ -97,9 +117,7 @@ public abstract class  Constants {
         TRANS_BEAN(".setResultTransformer(Transformers.aliasToBean("),
         TRANS_LIST(".setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list()"),
         TRANS_UNIQUE(".setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult()"),
-        RESTRICTION(".add(Restrictions"),
-        LIST(".list()"),
-        GETSESSION("sessionFactory.getCurrentSession()");
+        RESTRICTION(".add(Restrictions");
 
         private final String value;
 
@@ -115,6 +133,33 @@ public abstract class  Constants {
             return value;
         }
     }
+    
+    public enum HQLStatements {
+//      .createQuery("SELECT NEW BCG5.bcg.business.my.dto.PropertyDto(field.fieldName, s1.fieldName) " +
+//      "From Field field, SampleOne s1, SampleTwo s2  Where " +
+//      		"field.fieldName = s1.fieldName AND field.fieldName = s2.fieldName")
+    	CREATEQUERY(".createQuery"),
+    	SELECT("SELECT"),
+    	NEW("NEW"),
+    	WHERE("WHERE"),
+    	FROM("FROM"),
+    	AND("AND");
+
+        private final String value;
+
+        public String getValue() {
+            return value;
+        }
+
+        private HQLStatements(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
+
     
     public static final String HBDAOIMPL = 
     "\tprivate static final Logger logger = Logger.getLogger(cl@55H00k.class);\n"

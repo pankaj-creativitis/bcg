@@ -18,6 +18,7 @@ public class DTORelation implements Serializable{
 	private String dtoDetailId;
 	private String dtoPojoClassName;
 	private String dtoName;
+	private String dtoFieldName;
 
 	@Id
     @Column(name = "DTO_RELATION_ID", nullable = false, unique = true)
@@ -47,7 +48,18 @@ public class DTORelation implements Serializable{
 
 	public void setDtoName(String dtoName) {
 		this.dtoName = dtoName;
+	}
+
+	@Column(name = "DTO_RELATION_FIELD")
+	public String getDtoFieldName() {
+		return dtoFieldName;
+	}
+
+	public void setDtoFieldName(String dtoFieldName) {
+		this.dtoFieldName = dtoFieldName;
 	}	
+	
+	
 	
 	
 

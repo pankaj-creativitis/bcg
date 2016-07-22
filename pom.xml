@@ -29,18 +29,11 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<warFile>bcg.war</warFile>
-					<url>http://localhost:8080/manager/text</url>
-					<server>bcgDeployement</server>
-					<path>/bcg</path>
-					<update>true</update>
-				</configuration>
-			</plugin> -->
+				<version>2.0</version>
+			</plugin>
 		</plugins>
 	</build>
 

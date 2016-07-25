@@ -50,7 +50,6 @@ public class UnzipUtility {
     	String line = null;
     	Set<String> configValues = new HashSet<>();
     	while ((line = br.readLine()) != null) {
-    		System.out.println(line);
     		line = line.trim();
     		line = line.replace(" ", "");
     		configValues.add(line);
@@ -67,7 +66,8 @@ public class UnzipUtility {
      * @param destDirectory
      * @throws IOException
      */
-    public void unzip(String zipFilePath, String destDirectory) throws IOException {
+    public void unzip(String zipFilePath, String destDirectory, String basePackage, String baseLocation) 
+    		throws IOException {
     	logger.info("in the unzip method > > > > > >> ");
         File destDir = new File(destDirectory);
         if (!destDir.exists()) {
@@ -78,9 +78,20 @@ public class UnzipUtility {
         // iterates over entries in the zip file
         while (entry != null) {
             String filePath = destDirectory + File.separator + entry.getName();
+            
+//         Set the client path location
+//        	String baseLocation = projectRoot + Constants.SRC + basePackage.replaceAll("\\.", "/");
+//        	System.out.println("baseLocation > > > "+baseLocation);
+            String pojoLocation = baseLocation + Constants.CLIENT_POJO_PACKAGE;
+            File baseLocationDir = new File(pojoLocation);
+            if (!baseLocationDir.exists()) {
+            	baseLocationDir.mkdirs();
+            }
+            String clientFilePath = pojoLocation + File.separator + entry.getName();
+            
             if (!entry.isDirectory()) {
                 // if the entry is a file, extracts it
-                extractFile(zipIn, filePath);
+                extractFile(zipIn, filePath, clientFilePath, basePackage);
                 try {
                 	String className = entry.getName().substring(0, entry.getName().indexOf("."));
 				} catch (Exception e) {
@@ -99,24 +110,24 @@ public class UnzipUtility {
     }
     
 //    Method Marked for deletion
-    public Map<String, Set<String>> unzipJson(String zipFilePath ) throws IOException {
-    	logger.info("in the unzip method > > > > > >> ");
-        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
-        ZipEntry entry = zipIn.getNextEntry();
-        Map<String, Set<String>> dtoMap = new HashMap<>();
-        while (entry != null) {
-            if (!entry.isDirectory()) {
-                // if the entry is a file, extracts it
-            	String dtoName = entry.getName();
-            	Set<String> jsonKeys = extractFileAsJsonKeys(zipIn);
-            	dtoMap.put(dtoName, jsonKeys);
-            } 
-            zipIn.closeEntry();
-            entry = zipIn.getNextEntry();
-        }
-        zipIn.close();
-        return dtoMap;
-    }
+//    public Map<String, Set<String>> unzipJson(String zipFilePath ) throws IOException {
+//    	logger.info("in the unzip method > > > > > >> ");
+//        ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
+//        ZipEntry entry = zipIn.getNextEntry();
+//        Map<String, Set<String>> dtoMap = new HashMap<>();
+//        while (entry != null) {
+//            if (!entry.isDirectory()) {
+//                // if the entry is a file, extracts it
+//            	String dtoName = entry.getName();
+//            	Set<String> jsonKeys = extractFileAsJsonKeys(zipIn);
+//            	dtoMap.put(dtoName, jsonKeys);
+//            } 
+//            zipIn.closeEntry();
+//            entry = zipIn.getNextEntry();
+//        }
+//        zipIn.close();
+//        return dtoMap;
+//    }
     
     public Map<String, Set<DtoRelationDto>> unzipJsonNew(String zipFilePath ) throws IOException {
     	logger.info("in the unzip method > > > > > >> ");
@@ -143,17 +154,39 @@ public class UnzipUtility {
      * @param filePath
      * @throws IOException
      */
-    private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+    private void extractFile(ZipInputStream zipIn, String filePath, String clientFilePath,
+    		String basePackage) throws IOException {
         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+        BufferedOutputStream clientBos = new BufferedOutputStream(new FileOutputStream(clientFilePath));
+        String clientPackage = "package " + basePackage + Constants.CODE_POJO_PKG;
+
         byte[] bytesIn = new byte[BUFFER_SIZE];
         int read = 0;
+        
+        clientBos.write(clientPackage.getBytes());
+        clientBos.write(ENDL.getBytes());
+        clientBos.write("//".getBytes());
+        
         bos.write("package BCG5.bcg.business.client.pojos;".getBytes());
         bos.write(ENDL.getBytes());
         bos.write("//".getBytes());
         while ((read = zipIn.read(bytesIn)) != -1) {
             bos.write(bytesIn, 0, read);
+            clientBos.write(bytesIn, 0, read);
         }
         bos.close();
+        clientBos.close();
+        
+//        byte[] clientBytesIn = new byte[BUFFER_SIZE];
+//        int readCount = 0;
+//        String clientPackage = "package " + basePackage + ".pojos";
+//        clientBos.write(clientPackage.getBytes());
+//        clientBos.write(ENDL.getBytes());
+//        clientBos.write("//".getBytes());
+//        while ((readCount = zipIn.read(clientBytesIn)) != -1) {
+//        	clientBos.write(clientBytesIn, 0, readCount);
+//        }
+//        clientBos.close();
     }
     
     /**

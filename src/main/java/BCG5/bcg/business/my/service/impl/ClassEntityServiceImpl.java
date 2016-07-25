@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import BCG5.bcg.business.common.Constants;
 import BCG5.bcg.business.my.dao.ClassEntityDao;
 import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.Field;
@@ -46,7 +47,7 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 
 	@Override
 	@Transactional
-	public void addClassEntities(String directoryPath) {
+	public void addClassEntities(String directoryPath, String basepackage) {
 		File dir = new File(directoryPath);
 		File[] directoryListing = dir.listFiles();
 		String pojoFilename;
@@ -72,7 +73,8 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 							if (aType.getActualTypeArguments()[0] != null) {
 								Type fieldArgType = aType.getActualTypeArguments()[0];
 								Class fieldArgClass = (Class) fieldArgType;
-								field.setFieldReturnType(fieldArgClass.getName());
+								field.setFieldReturnType(fieldArgClass.getName()
+										.replace("BCG5.bcg.business.client", basepackage));
 							}
 						}
 
@@ -97,7 +99,8 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 								if (argType instanceof ParameterizedType) {
 									Type elementType = ((ParameterizedType) argType).getActualTypeArguments()[0];
 									Class typeArgClass = (Class) elementType;
-									field.setFieldArgType(typeArgClass.getName());
+									field.setFieldArgType(typeArgClass.getName()
+											.replace("BCG5.bcg.business.client", basepackage));
 								}
 							}
 						}
@@ -106,14 +109,16 @@ public class ClassEntityServiceImpl implements ClassEntityService {
 						if (returnType instanceof ParameterizedType) {
 							Type elementType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
 							Class typeArgClass = (Class) elementType;
-							field.setFieldReturnType(typeArgClass.getName());
+							field.setFieldReturnType(typeArgClass.getName()
+									.replace("BCG5.bcg.business.client", basepackage));
 						}
 
 						field.setFieldName(method.getName());
 						String dataType = method.getReturnType().getTypeName();
 						field.setFieldDataType(dataType);
 						field.setFieldModifier(Modifier.toString(method.getModifiers()));
-						field.setFieldArgument(Arrays.toString(method.getParameterTypes()));
+						field.setFieldArgument(Arrays.toString(method.getParameterTypes())
+								.replace("BCG5.bcg.business.client", basepackage));
 						field.setFieldType("method");
 						field.setClassName(classEntity.getClassName());
 						field.setClassType("pojo");

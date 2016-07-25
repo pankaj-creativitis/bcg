@@ -20,8 +20,8 @@ public interface GenericCodeGeneratorService {
 
 	StringBuilder getServiceMethodText(Field field, Field daoField);
 
-	Set<String> getServiceClassImports(Field field, Field daoField, Set<String> existingImports);
-
 	String getHQLDaoText(Field field, List<String> hqlFields, StringBuilder builder);
+
+	Set<String> getServiceClassImports(Field field, Field daoField, Set<String> existingImports, String basePackage);
 
 }

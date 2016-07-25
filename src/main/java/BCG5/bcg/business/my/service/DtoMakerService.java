@@ -7,5 +7,6 @@ import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.dto.DtoRelationDto;
 
 public interface DtoMakerService {
-	void addDtoNew(String dtoName, Set<DtoRelationDto> fields);
+
+	void addDtoNew(String dtoName, Set<DtoRelationDto> fields, String baseLocation, String basepackage);
 }

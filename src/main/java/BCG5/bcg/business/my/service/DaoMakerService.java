@@ -6,7 +6,7 @@ import java.util.Set;
 import BCG5.bcg.business.my.dto.PropertyDto;
 
 public interface DaoMakerService {
-	
-	void addDao();
+
+	void addDao(String baseLocation, String basepackage);
 
 }

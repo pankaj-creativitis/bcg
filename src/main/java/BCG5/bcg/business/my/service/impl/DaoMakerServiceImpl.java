@@ -1,5 +1,6 @@
 package BCG5.bcg.business.my.service.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +57,7 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 
 	@Override
 	@Transactional
-	public void addDao() {
+	public void addDao(String baseLocation, String basepackage) {
 
 		List<DTORelation> dtoRelations = classEntityDao.getAllDTORelations();
 
@@ -103,7 +104,7 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 			field.setClassName(key + Constants.ClassType.DAOIMPL.getValue());
 			field.setFieldName(Constants.GET_PREFIX + entry.getKey() + "List");
 			field.setFieldDataType("java.util.List");
-			field.setFieldReturnType("BCG5.bcg.business.client.dtos." + entry.getKey());
+			field.setFieldReturnType(basepackage + ".dtos." + entry.getKey());
 			field.setFieldType("method");
 			field.setFieldModifier(Constants.PUBLIC);
 
@@ -111,18 +112,18 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 			classEntity.setClassFields(fields);
 			classEntitieSet.add(classEntity);
 
-			addDaoText(classEntity);
+			addDaoText(classEntity, baseLocation, basepackage);
 
 		}
 
 		for (ClassEntity classEntity : classEntitieSet) {
 			classEntityDao.addClassEntity(classEntity);
 			// add the entity for service
-			serviceMakerService.addService(classEntity);
+			serviceMakerService.addService(classEntity, baseLocation, basepackage);
 		}
 	}
 
-	public void addDaoText(ClassEntity daoEntity) {
+	public void addDaoText(ClassEntity daoEntity, String baseLocation, String basepackage) {
 
 		StringBuilder daoStructureText = genericCodeGeneratorService.getStructureText(daoEntity.getClassName(),
 				Constants.ClassType.DAOIMPL.getValue());
@@ -155,7 +156,7 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 				for (String hierarchy : baseHierarchy) {
 					baseClass = hierarchy.substring(0, hierarchy.indexOf("."));
 					String baseClassName = baseClass.substring(0, 1).toUpperCase() + baseClass.substring(1);
-					importSet.add(Constants.POJO_PKG + baseClassName);
+					importSet.add(basepackage + ".pojos." + baseClassName);
 				}
 			}
 			importSet.add(field.getFieldDataType());
@@ -172,9 +173,15 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 		finalDaoString = finalDaoString.replace(Constants.IMPORT_HOOK,
 				Constants.HBDAOIMPORT + Constants.NEW_LINE + Constants.REPOSITORY + Constants.NEW_LINE);
 
+		String daoLocationDir = baseLocation + Constants.CLIENT_DAO_PACKAGE;
+        File locationDir = new File(daoLocationDir);
+        if (!locationDir.exists()) {
+        	locationDir.mkdirs();
+        }
+        
 		try {
-			unzipUtility.makeClientFiles(finalDaoString, Constants.CLIENT_PACKAGE + Constants.CLIENT_DAO_PACKAGE
-					+ daoEntity.getClassName() + Constants.JAVA_EXT, (Constants.CODE_PKG + Constants.CODE_DAO_PKG));
+			unzipUtility.makeClientFiles(finalDaoString, baseLocation + Constants.CLIENT_DAO_PACKAGE
+					+ daoEntity.getClassName() + Constants.JAVA_EXT, ("package " + basepackage + Constants.CODE_DAO_PKG));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -52,15 +52,19 @@ public abstract class  Constants {
 	public static final String CLIENT_SERVICE_PACKAGE ="/service/";
 	
 	public static final String CODE_PKG = "package BCG5.bcg.business.client.";
-	public static final String CODE_DTO_PKG = "dtos;";
-	public static final String CODE_DAO_PKG = "daos;";
-	public static final String CODE_SERVICE_PKG = "service;";
+	public static final String CODE_POJO_PKG = ".pojos;";
+	public static final String CODE_DTO_PKG = ".dtos;";
+	public static final String CODE_DAO_PKG = ".daos;";
+	public static final String CODE_SERVICE_PKG = ".service;";
 	public static final String POJO_PKG = "BCG5.bcg.business.client.pojos.";
 	public static final String ALL_DAO_PKG = "BCG5.bcg.business.client.daos.";
 	public static final String DTO_PKG = "BCG5.bcg.business.client.dtos.";
 	
 	public static final String POJOZIP = "pojozip";
 	public static final String JSONZIP = "jsonzip";
+	public static final String PROJECTROOT = "projectroot";
+	public static final String BASEPACKAGE = "basepackage";
+	public static final String SRC = "/src/main/java/";
 	
 	public static final String SUPPRESS_WARNINGS = "@SuppressWarnings(\"unchecked\")";
 	public static final String REPOSITORY = "@Repository";

@@ -7,6 +7,6 @@ public interface ClassEntityService {
 //	To be removed
 	void addClassEntity(ClassEntity classEntity);
 	
-	void addClassEntities(String directoryPath);
+	void addClassEntities(String directoryPath, String basepackage);
 
 }

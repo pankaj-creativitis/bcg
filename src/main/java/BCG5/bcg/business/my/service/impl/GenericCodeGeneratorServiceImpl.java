@@ -156,8 +156,8 @@ public class GenericCodeGeneratorServiceImpl implements GenericCodeGeneratorServ
 	}
 
 	@Override
-	public Set<String> getServiceClassImports(Field field, Field daoField, Set<String> existingImports) {
-		existingImports.add(Constants.ALL_DAO_PKG + daoField.getClassName());
+	public Set<String> getServiceClassImports(Field field, Field daoField, Set<String> existingImports, String basePackage) {
+		existingImports.add(basePackage+ ".daos." + daoField.getClassName());
 		existingImports.add(field.getFieldDataType());
 		existingImports.add(field.getFieldReturnType());
 

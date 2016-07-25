@@ -4,6 +4,6 @@ import BCG5.bcg.business.my.domain.ClassEntity;
 
 public interface ServiceMakerService {
 
-	void addService(ClassEntity daoEntity);
+	void addService(ClassEntity daoEntity, String baseLocation, String basePackage);
 
 }

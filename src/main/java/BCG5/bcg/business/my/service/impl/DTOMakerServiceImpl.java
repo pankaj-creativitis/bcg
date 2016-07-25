@@ -60,7 +60,7 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 	
 	@Override
 	@Transactional
-	public void addDtoNew(String dtoName, Set<DtoRelationDto> fields) {
+	public void addDtoNew(String dtoName, Set<DtoRelationDto> fields, String baseLocation, String basepackage) {
 		
 		List<Field> dtoFields = new ArrayList<>();
 		ClassEntity dtoEntity = new ClassEntity();
@@ -123,12 +123,12 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 		}
 		dtoEntity.setClassFields(dtoFields);
 		classEntityService.addClassEntity(dtoEntity);
-		makeDtoClass(dtoEntity);
+		makeDtoClass(dtoEntity, baseLocation, basepackage);
 //		add the dao and service classes
-		daoMakerService.addDao();
+		daoMakerService.addDao(baseLocation, basepackage);
 	}
 	
-	private void makeDtoClass(ClassEntity dtoEntity) {
+	private void makeDtoClass(ClassEntity dtoEntity, String baseLocation, String basepackage) {
 		
 		StringBuilder dtoStructureText = genericCodeGeneratorService.getStructureText(dtoEntity.getClassName(), 
 				Constants.ClassType.DTO.getValue());
@@ -138,10 +138,15 @@ public class DTOMakerServiceImpl implements DtoMakerService{
 				
 		String finalClassString = dtofinalText.toString();
 		finalClassString = finalClassString.replace(Constants.IMPORT_HOOK, "");
-		String finalOutputPath = Constants.CLIENT_PACKAGE + Constants.CLIENT_DTO_PACKAGE 
+		String finalOutputPath = baseLocation + Constants.CLIENT_DTO_PACKAGE 
 				+ File.separator + dtoEntity.getClassName() + Constants.JAVA_EXT;
+		String dtoLocationDir = baseLocation + Constants.CLIENT_DTO_PACKAGE;
+        File locationDir = new File(dtoLocationDir);
+        if (!locationDir.exists()) {
+        	locationDir.mkdirs();
+        }
 		try {
-			unzipUtility.makeClientFiles(finalClassString, finalOutputPath, (Constants.CODE_PKG + Constants.CODE_DTO_PKG));
+			unzipUtility.makeClientFiles(finalClassString, finalOutputPath, ("package " + basepackage + Constants.CODE_DTO_PKG));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

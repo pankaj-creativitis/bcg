@@ -1,5 +1,6 @@
 package BCG5.bcg.business.my.service.impl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,7 +41,7 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 	private UnzipUtility unzipUtility;
 
 	@Override
-	public void addService(ClassEntity daoEntity) {
+	public void addService(ClassEntity daoEntity, String baseLocation, String basePackage) {
 
 		String className = daoEntity.getClassName();
 		className = className.replace(Constants.ClassType.DAOIMPL.getValue(),
@@ -64,19 +65,19 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 			serviceField.setFieldType(daoField.getFieldType());
 			serviceFields.add(serviceField);
 
-			serviceImports = genericCodeGeneratorService.getServiceClassImports(serviceField, daoField, serviceImports);
+			serviceImports = genericCodeGeneratorService.getServiceClassImports(serviceField, daoField, serviceImports, basePackage);
 			methodBuilder.append(genericCodeGeneratorService.getServiceMethodText(serviceField, daoField));
 
 		}
 
 		serviceClassEntity.setClassFields(serviceFields);
 		String daoClassName = daoEntity.getClassName();
-		makeServiceText(serviceImports, methodBuilder, serviceClassEntity, daoClassName);
+		makeServiceText(serviceImports, methodBuilder, serviceClassEntity, daoClassName, baseLocation);
 		classEntityDao.addClassEntity(serviceClassEntity);
 	}
 
 	public void makeServiceText(Set<String> serviceImports, StringBuilder methodContent, ClassEntity serviceClassEntity,
-			String daoClassName) {
+			String daoClassName, String baseLocation) {
 
 		StringBuilder serviceStructureText = genericCodeGeneratorService
 				.getStructureText(serviceClassEntity.getClassName(), serviceClassEntity.getClassType());
@@ -97,9 +98,14 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 
 		String daoClassNameVariable = daoClassName.substring(0, 1).toLowerCase() + daoClassName.substring(1);
 		serviceText = serviceText.replace(Constants.VARIABLEHOOK, daoClassNameVariable);
+		String serviceLocationDir = baseLocation + Constants.CLIENT_SERVICE_PACKAGE;
+        File locationDir = new File(serviceLocationDir);
+        if (!locationDir.exists()) {
+        	locationDir.mkdirs();
+        }
 		try {
 			unzipUtility.makeClientFiles(
-					serviceText, Constants.CLIENT_PACKAGE + Constants.CLIENT_SERVICE_PACKAGE
+					serviceText, baseLocation + Constants.CLIENT_SERVICE_PACKAGE
 							+ serviceClassEntity.getClassName() + Constants.JAVA_EXT,
 					(Constants.CODE_PKG + Constants.CODE_SERVICE_PKG));
 		} catch (IOException e) {

@@ -136,7 +136,7 @@ public class DaoMakerServiceImpl implements DaoMakerService {
 
 			String fullReturnType = field.getFieldReturnType();
 			String returnType = fullReturnType.substring(fullReturnType.lastIndexOf(".") + 1, fullReturnType.length());
-			Boolean isHQLMethod = daoMakerDao.checkHQlMethod(returnType);
+			Boolean isHQLMethod = daoMakerDao.checkHQLMethod(returnType);
 
 			if (isHQLMethod) {
 				System.out.println("isHQLMethod > > > " + isHQLMethod);

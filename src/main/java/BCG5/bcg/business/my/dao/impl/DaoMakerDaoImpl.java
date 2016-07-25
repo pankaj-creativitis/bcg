@@ -113,7 +113,7 @@ public class DaoMakerDaoImpl implements DaoMakerDao {
 	// the join field
 	// by adding extra field in the FIELD table
 	@Override
-	public Boolean checkHQlMethod(String dtoName) {
+	public Boolean checkHQLMethod(String dtoName) {
 		Boolean isJoin = false;
 		@SuppressWarnings("unchecked")
 		List<String> dtoRelations = (List<String>) sessionFactory.getCurrentSession()

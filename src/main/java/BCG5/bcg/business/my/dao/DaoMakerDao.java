@@ -16,5 +16,5 @@ public interface DaoMakerDao {
 
 	List<String> getHQLFields(String dtoName);
 
-	Boolean checkHQlMethod(String dtoName);
+	Boolean checkHQLMethod(String dtoName);
 }

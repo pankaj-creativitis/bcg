@@ -3,6 +3,7 @@ package BCG5.bcg.business.my.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -310,20 +311,27 @@ public class GenericCodeGeneratorServiceImpl implements GenericCodeGeneratorServ
 		// Refactor duplicate code later
 		Set<String> joinClasses = new HashSet<>();
 		Set<String> joinConditions = new HashSet<>();
-		for (String hqlField : hqlFields) {
+		Set<String> remainingFields = new HashSet<>();
+		Iterator<String> fieldIterator = hqlFields.iterator();
+		while (fieldIterator.hasNext()) {
+			String hqlField = fieldIterator.next();
 			// error handling pending
+			// fetch the join classes for FROM clause
+			// fetch the join conditions for WHERE clause
 			if (hqlField.contains(Constants.COMMA)) {
 				String joinCondition = hqlField;
 				String[] joinClassesArray = joinCondition.split(Constants.COMMA);
-
+				remainingFields.add(joinClassesArray[0].toString());
 				for (int i = 0; i < joinClassesArray.length; i++) {
 					joinConditions.add(joinClassesArray[i]);
 					String joinClass = joinClassesArray[i].substring(0, joinClassesArray[i].indexOf("."));
 					joinClasses.add(joinClass);
 				}
+				// Update the hqlFields and remove duplicate fields
+				fieldIterator.remove();
 			}
 		}
-
+		hqlFields.addAll(remainingFields);
 		String returnTypeClass = field.getFieldReturnType().substring(field.getFieldReturnType().lastIndexOf(".") + 1,
 				field.getFieldReturnType().length());
 

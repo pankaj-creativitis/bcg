@@ -1,5 +1,3 @@
-## README Update pending, lot more updated, Project near completion
-
 ## Business-Code-Generator
 This project aims to achieve opinionated automated handling of impedance mismatch between database model and views or UI data models. It takes database pojos and UI model json views as an input and generates the intermediate translation code (DTO, Dao & Service classes).
 
@@ -12,33 +10,60 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 6. Spring or Hibernate framework independent code can be generated.
 
 ## How to run
-1. Run the application on tomcat. 
-2. Make a zip of sample pojos in package "BCG5.bcg.business.client.pojos" and upload it using POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file
-3. Check the sample client pojo files in "BCG5.bcg.business.client.pojos" package and make corresponding json text files based on the field names of the pojos. For example: 
-    PlanetChartView.json
-    {
-    "planetId":"planet01",
-    "planetName":"earth",
-    "planetSize":3,
-    "starName":"start.starName"
-    }
-    OR
-    PlanetView.json
-    {
-    "planetId":"planet01",
-    "planetName":"earth",
-    "planetHabitable":true,
-    "planetSize":3,
-    "starName":"sol",
-    "starType":"Yellow Dwarf"
-    }
+1. Compile the project; Open command prompt; Navigate to your project location.
+2. Run the command "mvn clean install" and then run "mvn tomcat7:run". 
+3. Make your pojos from your favorite tool & then make a zip of those pojos.
+	Sample POJO file
+	... <imports and package skipped>
+	public class Star {
+	
+	private String starId;
+	private String starName;
+	private String starType;
+	private Integer starSize;
+	private List<Planet> starPlanets;
+	... <getters & setters skipped>
+	
+4. Plan your UI views and make corresponding JSON files; Make a zip of same json files.
+	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (<class name>.<field name>) format in the POJO. Always keep the first character lowercase and follow camelCase notation.
+	Sample JSON file 
+	{
+		"planetId":"planet.planetId",
+		"planetName":"planet.planetName",
+		"planetHabitable":"planet.planetHabitable",
+		"planetSize":"planet.planetSize",
+		"starName":"star.starName",
+		"starType":"star.starType"
+	}
 
-4. Make a zip of all such json files created and upload it  POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadJsonZip/path_to_your_json_zip_file
+	In case there is a JSON which has a join field from multiple disconnected/dis-associated/unrelated tables, please follow below format. For example, notice that "planetName" is a join field and corresponds to format["planet.planetName","asteroid.asteroidNearBodyName"] that is <class name-1>.<field name> , <class name-2>.<field name>, ... <class name-n>.<field name>:
+	Sample JSON file:
+	{
+		"asteroidId":"asteroid.asteroidId",
+		"planetName":["planet.planetName","asteroid.asteroidNearBodyName"],
+		"asteroidName":"asteroid.asteroidName"
+	}
 
-After following these steps the code (dtos, daos and services) will be generated in respective client packages in the same project. Future plan is to generate the code files in the client specified project location.
+5. Make a config file (txt file format) with following details:
+
+	pojozip = <path to your pojo zip>
+	jsonzip = <path to your json zip>
+	projectroot = <path to your project root>
+	basepackage = <base package in your project>
+
+	Sample config file:
+	pojozip = /home/ngadmin/Desktop/domain_pojos.zip
+	jsonzip = /home/ngadmin/Desktop/json_views.zip
+	projectroot = /home/ngadmin/eclipseworkspace/ClientProject
+	basepackage = com.client.project
+
+	The project expects above 4 parameters (pojozip, jsonzip, projectroot, basepackage) from the config file.
+
+6. Make POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile/<full path to your config.txt file>
+	Sample call
+	http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile//home/ngadmin/Desktop/config.txt
+
+	After Making this call all the required files (pojos, dtos, daos and service) along with proper packages will be generated in the client project location. At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project.
 
 # Note: 
-The URI http://localhost:8080/bcg/webapi/generateCode/uploadPojoZip/path_to_your_pojo_zip_file is partially working. First we need to manually insert the required pojos in the package "BCG5.bcg.business.client.pojos" and then make a zip of the same pojos to upload on the above URI. Work in progress to make a single call which uploads pojos in project as well as processes the pojos.
-
-Same thing can be tested, by replacing the existing sample pojos in the project by your created pojos and respective json files zip. The plan is to upload the pojos zip and json zip together in the same call and the code is generated instantaneously. The call for uploading pojos is also present, but not completely functional. So please follow the above mentioned process in note.
-
+At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project.

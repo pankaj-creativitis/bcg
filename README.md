@@ -1,3 +1,5 @@
+## README Update pending, lot more updated, Project near completion
+
 ## Business-Code-Generator
 This project aims to achieve opinionated automated handling of impedance mismatch between database model and views or UI data models. It takes database pojos and UI model json views as an input and generates the intermediate translation code (DTO, Dao & Service classes).
 

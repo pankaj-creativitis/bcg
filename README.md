@@ -27,7 +27,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	... <getters & setters skipped>```
 	
 4. Plan your UI views and make corresponding JSON files; Make a zip of same json files.
-	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (<class name>.<field name>) format in the POJO. Always keep the first character lowercase and follow camelCase notation.
+	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (`<class name>.<field name>`) format in the POJO. Always keep the first character lowercase and follow camelCase notation.
 	
 	Sample JSON file:
 	
@@ -40,7 +40,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 		"starType":"star.starType"
 	}```
 
-	In case there is a JSON which has a join field from multiple disconnected/dis-associated/unrelated tables, please follow below format. For example, notice that "planetName" is a join field and corresponds to format["planet.planetName","asteroid.asteroidNearBodyName"] that is <class name-1>.<field name> , <class name-2>.<field name>, ... <class name-n>.<field name>:
+	In case there is a JSON which has a join field from multiple disconnected/dis-associated/unrelated tables, please follow below format. For example, notice that "planetName" is a join field and corresponds to format["planet.planetName","asteroid.asteroidNearBodyName"] that is `<class name-1>.<field name> , <class name-2>.<field name>, ... <class name-n>.<field name>`:
 	
 	Sample JSON file:
 	
@@ -67,7 +67,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 
 	The project expects above 4 parameters (pojozip, jsonzip, projectroot, basepackage) from the config file.
 
-6. Make POST call on URI: http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile/<full path to your config.txt file>
+6. Make POST call on URI: `http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile/<full path to your config.txt file>`
 	Sample call
 	http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile//home/ngadmin/Desktop/config.txt
 

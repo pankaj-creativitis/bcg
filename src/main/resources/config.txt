@@ -1,0 +1,6 @@
+## config file for code generation
+pojozip = /home/ngadmin/neonworkspace/BCG/src/main/java/com/mean/business/domain/domain.zip
+jsonzip = /home/ngadmin/Desktop/Code_Gen_Test/Code_Gen_Test.zip
+projectroot = /home/ngadmin/neonworkspace/project.dumper
+basepackage = project.dumper
+

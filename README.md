@@ -16,13 +16,13 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	
 	Sample code fragment of a POJO file:
 	
-	```public class Star {
+	`public class Star {
 	
 	private String starId;
 	private String starName;
 	private String starType;
 	private Integer starSize;
-	private List<Planet> starPlanets;```
+	private List<Planet> starPlanets;`
 
 4. Plan your UI views and make corresponding JSON files; Make a zip of same json files.
 	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (`<class name>.<field name>`) format in the POJO. Always keep the first character lowercase and follow camelCase notation.

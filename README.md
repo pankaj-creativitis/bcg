@@ -13,7 +13,8 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 1. Compile the project; Open command prompt; Navigate to your project location.
 2. Run the command "mvn clean install" and then run "mvn tomcat7:run". 
 3. Make your pojos from your favorite tool & then make a zip of those pojos.
-	Sample POJO file
+	Sample POJO file:
+	
 	```... <imports and package skipped>
 	public class Star {
 	
@@ -26,7 +27,8 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	
 4. Plan your UI views and make corresponding JSON files; Make a zip of same json files.
 	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (<class name>.<field name>) format in the POJO. Always keep the first character lowercase and follow camelCase notation.
-	Sample JSON file 
+	Sample JSON file:
+	
 	```{
 		"planetId":"planet.planetId",
 		"planetName":"planet.planetName",

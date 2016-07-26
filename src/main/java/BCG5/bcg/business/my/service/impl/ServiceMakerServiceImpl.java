@@ -65,19 +65,20 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 			serviceField.setFieldType(daoField.getFieldType());
 			serviceFields.add(serviceField);
 
-			serviceImports = genericCodeGeneratorService.getServiceClassImports(serviceField, daoField, serviceImports, basePackage);
+			serviceImports = genericCodeGeneratorService.getServiceClassImports(serviceField, daoField, serviceImports,
+					basePackage);
 			methodBuilder.append(genericCodeGeneratorService.getServiceMethodText(serviceField, daoField));
 
 		}
 
 		serviceClassEntity.setClassFields(serviceFields);
 		String daoClassName = daoEntity.getClassName();
-		makeServiceText(serviceImports, methodBuilder, serviceClassEntity, daoClassName, baseLocation);
+		makeServiceText(serviceImports, methodBuilder, serviceClassEntity, daoClassName, baseLocation, basePackage);
 		classEntityDao.addClassEntity(serviceClassEntity);
 	}
 
 	public void makeServiceText(Set<String> serviceImports, StringBuilder methodContent, ClassEntity serviceClassEntity,
-			String daoClassName, String baseLocation) {
+			String daoClassName, String baseLocation, String basePackage) {
 
 		StringBuilder serviceStructureText = genericCodeGeneratorService
 				.getStructureText(serviceClassEntity.getClassName(), serviceClassEntity.getClassType());
@@ -99,15 +100,16 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 		String daoClassNameVariable = daoClassName.substring(0, 1).toLowerCase() + daoClassName.substring(1);
 		serviceText = serviceText.replace(Constants.VARIABLEHOOK, daoClassNameVariable);
 		String serviceLocationDir = baseLocation + Constants.CLIENT_SERVICE_PACKAGE;
-        File locationDir = new File(serviceLocationDir);
-        if (!locationDir.exists()) {
-        	locationDir.mkdirs();
-        }
+		File locationDir = new File(serviceLocationDir);
+		if (!locationDir.exists()) {
+			locationDir.mkdirs();
+		}
 		try {
-			unzipUtility.makeClientFiles(
-					serviceText, baseLocation + Constants.CLIENT_SERVICE_PACKAGE
-							+ serviceClassEntity.getClassName() + Constants.JAVA_EXT,
-					(Constants.CODE_PKG + Constants.CODE_SERVICE_PKG));
+			unzipUtility
+					.makeClientFiles(
+							serviceText, baseLocation + Constants.CLIENT_SERVICE_PACKAGE
+									+ serviceClassEntity.getClassName() + Constants.JAVA_EXT,
+							("package " + basePackage + Constants.CODE_SERVICE_PKG));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

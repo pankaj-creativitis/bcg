@@ -13,6 +13,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 1. Compile the project; Open command prompt; Navigate to your project location.
 2. Run the command "mvn clean install" and then run "mvn tomcat7:run". 
 3. Make your pojos from your favorite tool & then make a zip of those pojos.
+	
 	Sample POJO file:
 	
 	```... <imports and package skipped>
@@ -27,6 +28,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	
 4. Plan your UI views and make corresponding JSON files; Make a zip of same json files.
 	Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (<class name>.<field name>) format in the POJO. Always keep the first character lowercase and follow camelCase notation.
+	
 	Sample JSON file:
 	
 	```{
@@ -39,7 +41,9 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	}```
 
 	In case there is a JSON which has a join field from multiple disconnected/dis-associated/unrelated tables, please follow below format. For example, notice that "planetName" is a join field and corresponds to format["planet.planetName","asteroid.asteroidNearBodyName"] that is <class name-1>.<field name> , <class name-2>.<field name>, ... <class name-n>.<field name>:
+	
 	Sample JSON file:
+	
 	```{
 		"asteroidId":"asteroid.asteroidId",
 		"planetName":["planet.planetName","asteroid.asteroidNearBodyName"],
@@ -48,12 +52,14 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 
 5. Make a config file (txt file format) with following details:
 
+	
 	```pojozip = <path to your pojo zip>
 	jsonzip = <path to your json zip>
 	projectroot = <path to your project root>
 	basepackage = <base package in your project>```
 
 	Sample config file:
+	
 	```pojozip = /home/ngadmin/Desktop/domain_pojos.zip
 	jsonzip = /home/ngadmin/Desktop/json_views.zip
 	projectroot = /home/ngadmin/eclipseworkspace/ClientProject

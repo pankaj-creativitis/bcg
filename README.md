@@ -9,6 +9,10 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 5. Case of an unknown field (say a calculated field or a formula field): In this case a set of TODOs with relavant message can be inserted in the code. So that it is easier for the developer to fill in the gaps.
 6. Spring or Hibernate framework independent code can be generated.
 
+## Prerequisites
+1. Java, Maven and mysql installed in the system
+2. Update mysql settings as per your local system in SpringAppConfiguration class > getDataSource() method.
+
 ## How to run
 1. Compile the project; Open command prompt; Navigate to your project location.
 2. Run the command "mvn clean install" and then run "mvn tomcat7:run". 

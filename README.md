@@ -16,7 +16,7 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 ## How to run
 1. Compile the project; Open command prompt; Navigate to your project location.
 2. Run the command "mvn clean install" and then run "mvn tomcat7:run". 
-3. Make your pojos from your favorite tool & then make a zip of those pojos.
+3. Make your pojos from your favorite tool & then make a zip of those pojos. **(All the sample code files have been uploaded in application's src/main/resources directory and can be used to test the application)**
 	
 	Sample code fragment of a POJO file:
 	

@@ -1,27 +1,18 @@
 package BCG5.bcg.business.my.dao.impl;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.maven.artifact.versioning.Restriction;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import BCG5.bcg.business.common.Constants;
 import BCG5.bcg.business.my.dao.ClassEntityDao;
 import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
-import BCG5.bcg.business.my.dto.DtoRelationDto;
-import BCG5.bcg.business.my.dto.PropertyDto;
 
 @Repository
 public class ClassEntityDaoImpl implements ClassEntityDao {
@@ -55,7 +46,6 @@ public class ClassEntityDaoImpl implements ClassEntityDao {
 
 	@Override
 	public ClassEntity getClassEntityByName(String className) {
-		@SuppressWarnings("unchecked")
 		ClassEntity classEntity = (ClassEntity) sessionFactory.getCurrentSession().createCriteria(ClassEntity.class)
 				.add(Restrictions.eq("className", className)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.uniqueResult();

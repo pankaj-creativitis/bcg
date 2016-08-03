@@ -7,11 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -215,29 +213,29 @@ public class UnzipUtility {
 		return jsonDtos;
 	}
 
-	/**
-	 * Extracts a zip entry as a JSON object (file entry)
-	 * 
-	 * @param zipIn
-	 * @param filePath
-	 * @throws IOException
-	 */
-	private Set<String> extractFileAsJsonKeys(ZipInputStream zipIn) throws IOException {
-
-		String jsonTxt = IOUtils.toString(zipIn);
-		JSONObject json = (JSONObject) new JSONObject(jsonTxt);
-		Iterator<?> keys = json.keys();
-		Set<String> jsonKeys = new HashSet<>();
-		while (keys.hasNext()) {
-			String key = (String) keys.next();
-			jsonKeys.add(key);
-			if (json.get(key) instanceof JSONObject) {
-				// TODO:Possibly make a recursive function in case we need the
-				// inner Json keys..
-			}
-		}
-		return jsonKeys;
-	}
+//	/**
+//	 * Extracts a zip entry as a JSON object (file entry)
+//	 * 
+//	 * @param zipIn
+//	 * @param filePath
+//	 * @throws IOException
+//	 */
+//	private Set<String> extractFileAsJsonKeys(ZipInputStream zipIn) throws IOException {
+//
+//		String jsonTxt = IOUtils.toString(zipIn);
+//		JSONObject json = (JSONObject) new JSONObject(jsonTxt);
+//		Iterator<?> keys = json.keys();
+//		Set<String> jsonKeys = new HashSet<>();
+//		while (keys.hasNext()) {
+//			String key = (String) keys.next();
+//			jsonKeys.add(key);
+//			if (json.get(key) instanceof JSONObject) {
+//				// TODO:Possibly make a recursive function in case we need the
+//				// inner Json keys..
+//			}
+//		}
+//		return jsonKeys;
+//	}
 
 	public void compile(String classDirectory) {
 		MavenCli cli = new MavenCli();

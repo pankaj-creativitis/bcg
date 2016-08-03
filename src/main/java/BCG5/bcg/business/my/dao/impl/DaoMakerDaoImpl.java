@@ -1,6 +1,5 @@
 package BCG5.bcg.business.my.dao.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,9 +13,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import BCG5.bcg.business.common.Constants;
 import BCG5.bcg.business.my.dao.DaoMakerDao;
-import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
 import BCG5.bcg.business.my.dto.PropertyDto;

@@ -15,7 +15,6 @@ import BCG5.bcg.business.common.UnzipUtility;
 import BCG5.bcg.business.my.dao.ClassEntityDao;
 import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.Field;
-import BCG5.bcg.business.my.dto.PropertyDto;
 import BCG5.bcg.business.my.service.GenericCodeGeneratorService;
 import BCG5.bcg.business.my.service.ServiceMakerService;
 
@@ -53,7 +52,7 @@ public class ServiceMakerServiceImpl implements ServiceMakerService {
 		StringBuilder methodBuilder = new StringBuilder();
 		Set<String> serviceImports = new HashSet<>();
 		List<Field> serviceFields = new ArrayList<>();
-		String methodString = "";
+
 		for (Field daoField : daoEntity.getClassFields()) {
 			Field serviceField = new Field();
 			serviceField.setFieldName(daoField.getFieldName());

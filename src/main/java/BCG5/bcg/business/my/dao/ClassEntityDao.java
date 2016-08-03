@@ -1,12 +1,10 @@
 package BCG5.bcg.business.my.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import BCG5.bcg.business.my.domain.ClassEntity;
 import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
-import BCG5.bcg.business.my.dto.DtoRelationDto;
 
 public interface ClassEntityDao {
 	

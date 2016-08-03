@@ -1,11 +1,5 @@
 package BCG5.bcg.business.common;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import BCG5.bcg.business.my.dao.ClassEntityDao;
-import BCG5.bcg.business.my.service.impl.ServiceMakerServiceImpl;
-
 public abstract class  Constants {
 	
 	public static final String CLASS_START = "public class"; 

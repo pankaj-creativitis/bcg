@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import BCG5.bcg.business.my.domain.DTORelation;
 import BCG5.bcg.business.my.domain.Field;
 import BCG5.bcg.business.my.dto.PropertyDto;
 

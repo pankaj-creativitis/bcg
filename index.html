@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Bcg : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Bcg</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/pankaj-creativitis/bcg">View on GitHub</a>
+
+          <h1 id="project_title">Bcg</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/pankaj-creativitis/bcg/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/pankaj-creativitis/bcg/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a id="business-code-generator" class="anchor" href="#business-code-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Business-Code-Generator</h2>
+
+<p>This project aims to achieve opinionated automated handling of impedance mismatch between database model and views or UI data models. It takes database pojos and UI model json views as an input and generates the intermediate translation code (DTO, Dao &amp; Service classes).</p>
+
+<h2>
+<a id="whats-different-about-business-code-generator" class="anchor" href="#whats-different-about-business-code-generator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What's different about Business-Code-Generator?</h2>
+
+<ol>
+<li>At present generated code from other tools is tightly coupled to the database model, which is hardly the case in real world. In real-world projects we need a mix of different database models to be shown in any view. This tool primarily attempts to solve that problem.</li>
+<li>Fetches only the required data(DTO fields) from the back-end in dao layer itself, thus reducing memory footprint. These DTOs can be directly sent to the views. Also generates the minimal code required.</li>
+<li>Simplicity of use: Make your pojos from your favorite tool, upload the pojos in the form of a zip file. Plan your views and make the json or xml versions of view objects or DTOs. Similarly upload the zip of the json files. That's all is needed by our tool to make the remaining intermediate code.</li>
+<li>These dao methods from dao can be easily converted into search filter methods by automatic code tool.</li>
+<li>Case of an unknown field (say a calculated field or a formula field): In this case a set of TODOs with relavant message can be inserted in the code. So that it is easier for the developer to fill in the gaps.</li>
+<li>Spring or Hibernate framework independent code can be generated.</li>
+</ol>
+
+<h2>
+<a id="prerequisites" class="anchor" href="#prerequisites" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites</h2>
+
+<ol>
+<li>Java, Maven and mysql installed in the system</li>
+<li>Update mysql settings as per your local system in SpringAppConfiguration class &gt; getDataSource() method.</li>
+</ol>
+
+<h2>
+<a id="how-to-run" class="anchor" href="#how-to-run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to run</h2>
+
+<ol>
+<li>Compile the project; Open command prompt; Navigate to your project location.</li>
+<li>Run the command "mvn clean install" and then run "mvn tomcat7:run". </li>
+<li>
+<p>Make your pojos from your favorite tool &amp; then make a zip of those pojos. <strong>(All the sample code files have been uploaded in application's src/main/resources directory and can be used to test the application)</strong></p>
+
+<p>Sample code fragment of a POJO file:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Star</span> {
+<span class="pl-k">private</span> <span class="pl-smi">String</span> starId;
+<span class="pl-k">private</span> <span class="pl-smi">String</span> starName;
+<span class="pl-k">private</span> <span class="pl-smi">String</span> starType;
+<span class="pl-k">private</span> <span class="pl-smi">Integer</span> starSize;
+<span class="pl-k">private</span> <span class="pl-k">List&lt;<span class="pl-smi">Planet</span>&gt;</span> starPlanets;</pre></div>
+</li>
+<li>
+<p>Plan your UI views and make corresponding JSON files; Make a zip of same json files.
+Make sure that the json field name in any of the json file is same as pojo field name in uploaded pojo files. For example, notice in the below file "starName" field in JSON corresponds to "star.starName" (<code>&lt;class name&gt;.&lt;field name&gt;</code>) format in the POJO. Always keep the first character lowercase and follow camelCase notation.</p>
+
+<p>Sample JSON file:</p>
+
+<pre><code>{
+    "planetId":"planet.planetId",
+    "planetName":"planet.planetName",
+    "planetHabitable":"planet.planetHabitable",
+    "planetSize":"planet.planetSize",
+    "starName":"star.starName",
+    "starType":"star.starType"
+}
+</code></pre>
+
+<p>In case there is a JSON which has a join field from multiple disconnected/dis-associated/unrelated tables, please follow below format. For example, notice that "planetName" is a join field and corresponds to format["planet.planetName","asteroid.asteroidNearBodyName"] that is <code>&lt;class name-1&gt;.&lt;field name&gt; , &lt;class name-2&gt;.&lt;field name&gt;, ... &lt;class name-n&gt;.&lt;field name&gt;</code>:</p>
+
+<p>Sample JSON file:</p>
+
+<pre><code>{
+    "asteroidId":"asteroid.asteroidId",
+    "planetName":["planet.planetName","asteroid.asteroidNearBodyName"],
+    "asteroidName":"asteroid.asteroidName"
+}
+</code></pre>
+</li>
+<li>
+<p>Make a config file (txt file format) with following details:</p>
+
+<pre><code>pojozip = &lt;path to your pojo zip&gt;
+jsonzip = &lt;path to your json zip&gt;
+projectroot = &lt;path to your project root&gt;
+basepackage = &lt;base package in your project&gt;
+</code></pre>
+
+<p>Sample config file:</p>
+
+<pre><code>pojozip = /home/ngadmin/Desktop/domain_pojos.zip
+jsonzip = /home/ngadmin/Desktop/json_views.zip
+projectroot = /home/ngadmin/eclipseworkspace/ClientProject
+basepackage = com.client.project
+</code></pre>
+
+<p>The project expects above 4 parameters (pojozip, jsonzip, projectroot, basepackage) from the config file.</p>
+</li>
+<li>
+<p>Make POST call on URI: <code>http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile/&lt;full path to your config.txt file&gt;</code>
+Sample call
+http://localhost:8080/bcg/webapi/generateCode/uploadConfigFile//home/ngadmin/Desktop/config.txt</p>
+
+<p>After Making this call all the required files (pojos, dtos, daos and service) along with proper packages will be generated in the client project location. At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project.</p>
+</li>
+</ol>
+
+<h1>
+<a id="note" class="anchor" href="#note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Note:</h1>
+
+<p>At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project. Collaborators needed for further development.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Bcg maintained by <a href="https://github.com/pankaj-creativitis">pankaj-creativitis</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

@@ -85,4 +85,4 @@ This project aims to achieve opinionated automated handling of impedance mismatc
 	After Making this call all the required files (pojos, dtos, daos and service) along with proper packages will be generated in the client project location. At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project.
 
 # Note: 
-At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project. Collaborators needed for further development.
+At-present the project only generates Spring and Hibernate compatible code. So please make sure the your blank project is a spring-hibernate maven project.
